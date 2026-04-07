@@ -1,0 +1,14 @@
+/* ─── App-Level Overrides & Responsive ─── */
+
+/* Responsive: stack chart & table on mobile */
+@media (max-width: 900px) {
+  .results-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .dropzone {
+    padding: 32px 20px !important;
+  }
+}

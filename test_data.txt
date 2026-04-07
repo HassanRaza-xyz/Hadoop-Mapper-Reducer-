@@ -1,0 +1,19 @@
+Hassan is learning Hadoop PDC lab work
+Big Data is the future of computing
+MapReduce is a programming model for processing big data
+Hadoop uses MapReduce for distributed computing
+The mapper processes input data and produces key value pairs
+The reducer aggregates the values for each key
+Big Data analytics helps businesses make better decisions
+Machine learning and Big Data go hand in hand
+Cloud computing enables scalable Big Data processing
+Hassan is working on a Big Data project for PDC lab
+The MapReduce framework divides work into map and reduce tasks
+Data processing at scale requires distributed systems
+Hadoop ecosystem includes tools like Hive Spark and Pig
+Real time data processing is becoming increasingly important
+The future of Big Data lies in artificial intelligence
+Hassan loves programming and learning new technologies
+Big Data visualization helps in understanding complex datasets
+The mapper reads input line by line and emits word count pairs
+The reducer sums up all counts for each unique word
