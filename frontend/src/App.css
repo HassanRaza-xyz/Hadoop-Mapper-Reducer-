@@ -1,14 +1,10 @@
-/* ─── App-Level Overrides & Responsive ─── */
+/* ═══════════════════════════════════════════════════════════════
+   App.css — Responsive Overrides & Fine Tuning
+   ═══════════════════════════════════════════════════════════════ */
 
-/* Responsive: stack chart & table on mobile */
-@media (max-width: 900px) {
-  .results-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
+/* Remove Tailwind import — we use vanilla CSS only */
 
-@media (max-width: 600px) {
-  .dropzone {
-    padding: 32px 20px !important;
-  }
+/* Smooth body background extension for below-fold */
+html {
+  background: var(--bg-base, #060A14);
 }
