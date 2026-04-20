@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#201f1f",
+                        "on-primary-container": "#ffffff",
+                        "surface-tint": "#aec6ff",
+                        "surface-variant": "#353534",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#004397",
+                        "tertiary-container": "#00875d",
+                        "tertiary": "#4edea3",
+                        "on-secondary-container": "#a7b6cc",
+                        "secondary": "#b9c8de",
+                        "inverse-on-surface": "#313030",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#ffffff",
+                        "surface-container-highest": "#353534",
+                        "on-primary": "#002e6b",
+                        "on-secondary-fixed-variant": "#39485a",
+                        "surface": "#131313",
+                        "on-background": "#e5e2e1",
+                        "secondary-fixed": "#d4e4fa",
+                        "primary-fixed": "#d8e2ff",
+                        "on-tertiary": "#003824",
+                        "background": "#131313",
+                        "error": "#ffb4ab",
+                        "primary-container": "#0070f3",
+                        "primary-fixed-dim": "#aec6ff",
+                        "on-secondary-fixed": "#0d1c2d",
+                        "outline-variant": "#414754",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface-variant": "#c1c6d7",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-bright": "#393939",
+                        "primary": "#aec6ff",
+                        "outline": "#8b90a0",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary": "#233143",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "secondary-fixed-dim": "#b9c8de",
+                        "on-primary-fixed": "#001a43",
+                        "inverse-primary": "#0059c5",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-tertiary-fixed": "#002113",
+                        "inverse-surface": "#e5e2e1",
+                        "secondary-container": "#39485a",
+                        "tertiary-fixed-dim": "#4edea3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"],
+                        "mono": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { background-color: #131313; color: #e5e2e1; }
+        .pipeline-gradient {
+            background: linear-gradient(90deg, transparent 0%, #0070f3 50%, transparent 100%);
+            height: 2px;
+            filter: drop-shadow(0 0 8px #aec6ff);
+        }
+        .pipeline-vertical {
+            background: linear-gradient(180deg, transparent 0%, #0070f3 50%, transparent 100%);
+            width: 2px;
+            filter: drop-shadow(0 0 8px #aec6ff);
+        }
+        .emerald-glow {
+            filter: drop-shadow(0 0 12px #4edea3);
+        }
+        .glass-panel {
+            background: rgba(53, 53, 52, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        .terminal-scroll::-webkit-scrollbar { width: 4px; }
+        .terminal-scroll::-webkit-scrollbar-track { background: #0e0e0e; }
+        .terminal-scroll::-webkit-scrollbar-thumb { background: #414754; }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 z-50 flex justify-between items-center w-full px-8 py-4 bg-[#131313]/60 backdrop-blur-xl">
+<div class="text-xl font-black tracking-tighter text-[#aec6ff]">KINETIC_ENGINE</div>
+<div class="hidden md:flex gap-8 items-center">
+<span class="text-[#aec6ff] font-bold border-b-2 border-[#0070f3] text-sm uppercase tracking-widest cursor-pointer">Live_Stream</span>
+<span class="text-[#e5e2e1]/50 font-medium text-sm uppercase tracking-widest hover:text-[#aec6ff] transition-all duration-300 cursor-pointer">Clusters</span>
+<span class="text-[#e5e2e1]/50 font-medium text-sm uppercase tracking-widest hover:text-[#aec6ff] transition-all duration-300 cursor-pointer">Nodes</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#aec6ff] cursor-pointer hover:bg-[#2a2a2a] p-2 transition-all">terminal</span>
+<span class="material-symbols-outlined text-[#aec6ff] cursor-pointer hover:bg-[#2a2a2a] p-2 transition-all">settings</span>
+</div>
+</nav>
+<!-- SideNavBar (Pipeline Status) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-24 w-64 bg-[#131313] hidden lg:flex border-r border-outline-variant/10">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<span class="w-2 h-2 rounded-full bg-tertiary emerald-glow"></span>
+<span class="text-lg font-bold text-[#aec6ff] font-headline">PIPELINE_STATUS</span>
+</div>
+<p class="text-xs font-mono text-[#e5e2e1]/40 uppercase tracking-widest">Engine: Active</p>
+</div>
+<nav class="flex flex-col flex-grow">
+<div class="flex items-center gap-3 bg-[#1c1b1b] text-[#aec6ff] border-l-4 border-[#aec6ff] px-6 py-4 shadow-[0_0_15px_rgba(0,112,243,0.3)] cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">input</span>
+<span class="font-mono text-xs uppercase tracking-widest">Input</span>
+</div>
+<div class="flex items-center gap-3 text-[#e5e2e1]/40 px-6 py-4 hover:text-[#e5e2e1] hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-mono text-xs uppercase tracking-widest">Mapping</span>
+</div>
+<div class="flex items-center gap-3 text-[#e5e2e1]/40 px-6 py-4 hover:text-[#e5e2e1] hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="material-symbols-outlined">shuffle</span>
+<span class="font-mono text-xs uppercase tracking-widest">Shuffling</span>
+</div>
+<div class="flex items-center gap-3 text-[#e5e2e1]/40 px-6 py-4 hover:text-[#e5e2e1] hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="material-symbols-outlined">join_inner</span>
+<span class="font-mono text-xs uppercase tracking-widest">Reducing</span>
+</div>
+<div class="flex items-center gap-3 text-[#e5e2e1]/40 px-6 py-4 hover:text-[#e5e2e1] hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-mono text-xs uppercase tracking-widest">Output</span>
+</div>
+</nav>
+<div class="p-6">
+<button class="w-full bg-primary-container text-white py-3 font-mono text-xs tracking-tighter hover:shadow-[0_0_15px_#0070f3] transition-all active:scale-95">
+                RESTART_JOB
+            </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="lg:ml-64 pt-20">
+<!-- Section 1: Hero / Input -->
+<section class="min-h-screen flex items-center px-8 md:px-16 relative overflow-hidden" id="input">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-6xl z-10">
+<div class="flex flex-col justify-center space-y-8">
+<h1 class="text-6xl md:text-8xl font-black tracking-tighter leading-none text-on-surface">
+                        RAW_<br/><span class="text-primary">STREAM</span>
+</h1>
+<div class="glass-panel p-1 rounded-lg border border-outline-variant/10">
+<div class="bg-surface-container-lowest p-6 rounded-md font-mono text-sm h-64 overflow-hidden relative">
+<div class="text-primary/40 mb-2">0x01: system.init()</div>
+<div class="text-on-surface">"The quick brown fox jumps over the lazy dog"</div>
+<div class="text-on-surface">"A fast kinetic engine processes massive data"</div>
+<div class="text-on-surface">"Data is the fuel of the futuristic grid"</div>
+<div class="absolute bottom-6 left-6 animate-pulse bg-primary w-2 h-4"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-center relative">
+<!-- Pipeline Start -->
+<div class="absolute w-[300%] h-1 pipeline-gradient -left-full top-1/2"></div>
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center animate-ping absolute opacity-20"></div>
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center z-20">
+<span class="material-symbols-outlined text-white">bolt</span>
+</div>
+<!-- Data Packets -->
+<div class="absolute left-1/2 top-1/2 w-4 h-4 bg-primary rounded-sm rotate-45 animate-pulse ml-20"></div>
+<div class="absolute left-1/2 top-1/2 w-3 h-3 bg-primary rounded-sm rotate-45 animate-pulse ml-40 opacity-60"></div>
+</div>
+</div>
+<!-- Decorative Background -->
+<div class="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none"></div>
+</section>
+<!-- Section 2: Mapper -->
+<section class="min-h-screen flex flex-col justify-center px-8 md:px-16 relative" id="mapper">
+<div class="flex flex-col items-center mb-20 text-center">
+<h2 class="text-4xl font-black tracking-tighter mb-4 font-headline uppercase">Mapping_Layer</h2>
+<p class="font-mono text-xs text-on-surface-variant tracking-widest">Parallelizing atomic data operations</p>
+</div>
+<div class="flex flex-col md:flex-row justify-around gap-12 relative z-10">
+<!-- Mapper Nodes -->
+<div class="w-full md:w-72 bg-surface-container-low p-6 border-l-4 border-primary relative">
+<div class="text-xs font-mono text-primary/60 mb-4 tracking-widest">NODE_01</div>
+<div class="space-y-3 font-mono text-xs">
+<div class="flex justify-between py-2 border-b border-outline-variant/5">
+<span class="text-on-surface/50">"quick"</span>
+<span class="text-primary font-bold">1</span>
+</div>
+<div class="flex justify-between py-2 border-b border-outline-variant/5">
+<span class="text-on-surface/50">"brown"</span>
+<span class="text-primary font-bold">1</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-72 bg-surface-container-low p-6 border-l-4 border-primary relative">
+<div class="text-xs font-mono text-primary/60 mb-4 tracking-widest">NODE_02</div>
+<div class="space-y-3 font-mono text-xs">
+<div class="flex justify-between py-2 border-b border-outline-variant/5">
+<span class="text-on-surface/50">"kinetic"</span>
+<span class="text-primary font-bold">1</span>
+</div>
+<div class="flex justify-between py-2 border-b border-outline-variant/5">
+<span class="text-on-surface/50">"engine"</span>
+<span class="text-primary font-bold">1</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-72 bg-surface-container-low p-6 border-l-4 border-primary relative">
+<div class="text-xs font-mono text-primary/60 mb-4 tracking-widest">NODE_03</div>
+<div class="space-y-3 font-mono text-xs">
+<div class="flex justify-between py-2 border-b border-outline-variant/5">
+<span class="text-on-surface/50">"data"</span>
+<span class="text-primary font-bold">1</span>
+</div>
+<div class="flex justify-between py-2 border-b border-outline-variant/5">
+<span class="text-on-surface/50">"fuel"</span>
+<span class="text-primary font-bold">1</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Complex Pipeline Paths -->
+<div class="absolute top-1/2 left-0 w-full h-1/2 pointer-events-none opacity-20">
+<svg class="overflow-visible" height="100%" width="100%">
+<path class="animate-pulse" d="M 0 50 Q 300 50, 400 200" fill="none" stroke="#0070f3" stroke-width="2"></path>
+<path class="animate-pulse" d="M 0 50 Q 300 50, 600 200" fill="none" stroke="#0070f3" stroke-width="2"></path>
+<path class="animate-pulse" d="M 0 50 Q 300 50, 800 200" fill="none" stroke="#0070f3" stroke-width="2"></path>
+</svg>
+</div>
+</section>
+<!-- Section 3: Intermediate / Shuffle -->
+<section class="min-h-screen flex items-center px-8 md:px-16 relative overflow-hidden bg-surface-container-lowest" id="shuffle">
+<div class="absolute inset-0 opacity-10">
+<img class="w-full h-full object-cover" data-alt="Intricate motherboard circuitry patterns with blue glowing tracer lines and technical microchips in a dark sci-fi environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMs_eRZZUndidkZIQ5BjVKWLFFZ2tkaQF5J0rp2JfrhsJLsJVpOCfMiYTQC-nVx_MhZN7Y_aecZzyEMYcCK0FfUTI7Jae_AHOt2LQf-ySDTelIrF_9dihYnJmhPg0N2_OLlWzjlZLCISfn8gGyQXhRKCvfFAk5Zx7mICpC2aaSTFnQA3iMIMMZPs3s21diyozCob4VaZK23Q4tpjfoGZmq2o7xqeYoHb6LWWntlc6Pas7bT28HJITT9FmjwjEBhEMktO6-oL2qVN0"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-20 w-full max-w-6xl z-10">
+<div class="flex flex-col justify-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-6 w-fit">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span class="text-[10px] font-mono font-bold tracking-tighter text-primary uppercase">Network_Shuffle_Active</span>
+</div>
+<h2 class="text-5xl font-black tracking-tighter leading-none mb-8 font-headline">SHUFFLE &amp;<br/>SORT_STRATUM</h2>
+<p class="text-on-surface-variant max-w-md leading-relaxed">
+                        Data packets are rerouted through the global interconnect, grouping identical keys for massive reduction operations. Latency: <span class="font-mono text-primary">0.02ms</span>.
+                    </p>
+</div>
+<div class="relative flex items-center justify-center">
+<!-- The Vortex of Packets -->
+<div class="w-80 h-80 border border-outline-variant/20 rounded-full flex items-center justify-center relative">
+<div class="absolute w-full h-full border border-primary/20 rounded-full animate-[spin_10s_linear_infinite]"></div>
+<div class="absolute w-64 h-64 border border-primary/40 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+<!-- Packet Swarm -->
+<div class="absolute top-10 left-1/2 w-2 h-2 bg-primary rounded-sm rotate-45"></div>
+<div class="absolute bottom-20 right-10 w-3 h-3 bg-primary rounded-sm rotate-12"></div>
+<div class="absolute top-1/2 left-0 w-2 h-2 bg-primary rounded-sm rotate-90"></div>
+<div class="text-center z-10">
+<span class="material-symbols-outlined text-4xl text-primary mb-2">shuffle</span>
+<div class="font-mono text-[10px] tracking-widest text-primary/60">SORTING_KEYS</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Reducer Section -->
+<section class="min-h-screen flex flex-col justify-center px-8 md:px-16 relative" id="reducer">
+<div class="flex flex-col items-center mb-24">
+<h2 class="text-4xl font-black tracking-tighter mb-4 font-headline uppercase">Reducer_Phase</h2>
+<div class="w-32 h-1 bg-gradient-to-r from-primary to-tertiary"></div>
+</div>
+<div class="flex flex-col md:flex-row gap-16 justify-center items-center">
+<!-- Large Reducer Node 1 -->
+<div class="relative group">
+<div class="absolute -inset-2 bg-tertiary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="w-80 glass-panel border border-tertiary/20 p-8 relative">
+<div class="flex justify-between items-start mb-10">
+<div class="w-12 h-12 bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white">join_inner</span>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-mono text-tertiary/60 tracking-widest">REDUCER_ALPHA</span>
+<div class="text-xl font-bold font-headline text-tertiary">COMMIT_SET</div>
+</div>
+</div>
+<div class="space-y-4 font-mono text-sm">
+<div class="flex justify-between text-on-surface/40">
+<span>key: "engine"</span>
+<span class="text-tertiary font-bold">8</span>
+</div>
+<div class="flex justify-between text-on-surface/40">
+<span>key: "kinetic"</span>
+<span class="text-tertiary font-bold">12</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex justify-between">
+<span class="text-xs uppercase tracking-widest">Status</span>
+<span class="text-xs text-tertiary animate-pulse">COMPILING...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Large Reducer Node 2 -->
+<div class="relative group">
+<div class="absolute -inset-2 bg-tertiary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="w-80 glass-panel border border-tertiary/20 p-8 relative">
+<div class="flex justify-between items-start mb-10">
+<div class="w-12 h-12 bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white">join_right</span>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-mono text-tertiary/60 tracking-widest">REDUCER_BETA</span>
+<div class="text-xl font-bold font-headline text-tertiary">COMMIT_SET</div>
+</div>
+</div>
+<div class="space-y-4 font-mono text-sm">
+<div class="flex justify-between text-on-surface/40">
+<span>key: "data"</span>
+<span class="text-tertiary font-bold">45</span>
+</div>
+<div class="flex justify-between text-on-surface/40">
+<span>key: "stream"</span>
+<span class="text-tertiary font-bold">19</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex justify-between">
+<span class="text-xs uppercase tracking-widest">Status</span>
+<span class="text-xs text-tertiary animate-pulse">COMPILING...</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Vertical Transition Pipeline -->
+<div class="absolute bottom-0 left-1/2 h-20 pipeline-vertical -translate-x-1/2"></div>
+</section>
+<!-- Section 5: Output / Graph -->
+<section class="min-h-screen flex items-center px-8 md:px-16 relative overflow-hidden" id="output">
+<div class="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
+<!-- Graph Visualization -->
+<div class="md:col-span-8">
+<div class="mb-12">
+<h2 class="text-5xl font-black tracking-tighter mb-4 font-headline uppercase text-tertiary">Job_Result</h2>
+<p class="font-mono text-xs text-on-surface-variant tracking-widest">Visualization of finalized dataset aggregations</p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-lg min-h-[400px] flex items-end justify-around gap-4 relative border border-outline-variant/5">
+<div class="absolute inset-0 p-8 grid grid-rows-5 pointer-events-none">
+<div class="border-t border-outline-variant/10"></div>
+<div class="border-t border-outline-variant/10"></div>
+<div class="border-t border-outline-variant/10"></div>
+<div class="border-t border-outline-variant/10"></div>
+<div class="border-t border-outline-variant/10"></div>
+</div>
+<div class="flex flex-col items-center gap-4 z-10 w-full group">
+<div class="w-full bg-gradient-to-t from-tertiary/20 to-tertiary h-64 emerald-glow transition-all duration-500 hover:scale-x-110"></div>
+<span class="font-mono text-[10px] text-tertiary/80 uppercase">data</span>
+</div>
+<div class="flex flex-col items-center gap-4 z-10 w-full group">
+<div class="w-full bg-gradient-to-t from-tertiary/20 to-tertiary h-48 emerald-glow transition-all duration-500 hover:scale-x-110"></div>
+<span class="font-mono text-[10px] text-tertiary/80 uppercase">stream</span>
+</div>
+<div class="flex flex-col items-center gap-4 z-10 w-full group">
+<div class="w-full bg-gradient-to-t from-tertiary/20 to-tertiary h-32 emerald-glow transition-all duration-500 hover:scale-x-110"></div>
+<span class="font-mono text-[10px] text-tertiary/80 uppercase">engine</span>
+</div>
+<div class="flex flex-col items-center gap-4 z-10 w-full group">
+<div class="w-full bg-gradient-to-t from-tertiary/20 to-tertiary h-56 emerald-glow transition-all duration-500 hover:scale-x-110"></div>
+<span class="font-mono text-[10px] text-tertiary/80 uppercase">kinetic</span>
+</div>
+</div>
+</div>
+<!-- Final Text Output Area -->
+<div class="md:col-span-4 h-full flex flex-col">
+<div class="bg-surface-container-lowest p-6 flex-grow rounded-lg font-mono text-sm border border-outline-variant/20 terminal-scroll overflow-y-auto">
+<div class="text-tertiary/50 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>Finalization Complete</span>
+</div>
+<div class="space-y-2">
+<div class="p-2 bg-surface-container-high flex justify-between">
+<span class="text-on-surface/80">data:</span>
+<span class="text-tertiary">45</span>
+</div>
+<div class="p-2 bg-surface-container-high flex justify-between">
+<span class="text-on-surface/80">kinetic:</span>
+<span class="text-tertiary">38</span>
+</div>
+<div class="p-2 bg-surface-container-high flex justify-between">
+<span class="text-on-surface/80">stream:</span>
+<span class="text-tertiary">19</span>
+</div>
+<div class="p-2 bg-surface-container-high flex justify-between">
+<span class="text-on-surface/80">engine:</span>
+<span class="text-tertiary">12</span>
+</div>
+<div class="p-2 bg-surface-container-high flex justify-between">
+<span class="text-on-surface/80">quick:</span>
+<span class="text-tertiary">1</span>
+</div>
+<div class="p-2 bg-surface-container-high flex justify-between">
+<span class="text-on-surface/80">brown:</span>
+<span class="text-tertiary">1</span>
+</div>
+</div>
+<div class="mt-8">
+<button class="w-full border border-tertiary text-tertiary py-3 font-mono text-xs uppercase tracking-widest hover:bg-tertiary hover:text-black transition-all">
+                                EXPORT_JSON
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating UI elements -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="w-14 h-14 bg-primary-container rounded-lg flex items-center justify-center text-white shadow-[0_0_20px_rgba(0,112,243,0.4)] hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</div>
+<div class="fixed bottom-8 left-8 z-50 md:hidden">
+<div class="bg-surface-container-high rounded-full px-6 py-3 flex gap-6 border border-outline-variant/10 shadow-2xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">input</span>
+<span class="material-symbols-outlined text-on-surface/40">account_tree</span>
+<span class="material-symbols-outlined text-on-surface/40">shuffle</span>
+<span class="material-symbols-outlined text-on-surface/40">join_inner</span>
+</div>
+</div>
+</body></html>

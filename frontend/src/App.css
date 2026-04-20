@@ -1,10 +1,1 @@
-/* ═══════════════════════════════════════════════════════════════
-   App.css — Responsive Overrides & Fine Tuning
-   ═══════════════════════════════════════════════════════════════ */
-
-/* Remove Tailwind import — we use vanilla CSS only */
-
-/* Smooth body background extension for below-fold */
-html {
-  background: var(--bg-base, #060A14);
-}
+/* Styles moved to index.css */
