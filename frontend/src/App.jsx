@@ -17,7 +17,7 @@ function Icon({ name, filled, style }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   MATRIX BACKGROUND—Canvas-based digital rain for "Engine" feel
+   MATRIX BACKGROUND —Canvas- based digital rain for "Engine" feel
    ═══════════════════════════════════════════════════════════════ */
 function MatrixBackground() {
   const canvasRef = useRef(null);
