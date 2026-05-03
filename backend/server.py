@@ -7,11 +7,11 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "https://hadoop-mapper-reducer.vercel.app"}})
 
 # Directories
 BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
-ENGINE_DIR = os.path.dirname(BACKEND_DIR)
+ENGINE_DIR = BACKEND_DIR
 UPLOADS_DIR = os.path.join(BACKEND_DIR, "uploads")
 
 # Ensure uploads dir exists
@@ -22,25 +22,29 @@ if not os.path.exists(UPLOADS_DIR):
 def run_pipeline(input_path):
     # Cross-platform executable naming: favor Linux binaries on Render
     if os.name == 'nt':  # Windows
-        mapper_exe = os.path.join(ENGINE_DIR, "mapper.exe")
-        reducer_exe = os.path.join(ENGINE_DIR, "reducer.exe")
-    else:  # Linux (Render)
-        mapper_exe = os.path.join(ENGINE_DIR, "mapper")
-        reducer_exe = os.path.join(ENGINE_DIR, "reducer")
+        mapper_exe = os.path.join(ENGINE_DIR, "Mapper.exe")
+        reducer_exe = os.path.join(ENGINE_DIR, "Reducer.exe")
+    else:  # Linux (Render / Production)
+        mapper_exe = os.path.join(ENGINE_DIR, "Mapper")
+        reducer_exe = os.path.join(ENGINE_DIR, "Reducer")
     
     # Validation
     if not os.path.exists(mapper_exe):
-        # Last ditch effort for local dev
-        if os.name != 'nt' and os.path.exists(mapper_exe + ".exe"):
-             mapper_exe += ".exe"
+        # Fallback for lowercase in case of local inconsistency
+        alt_name = "mapper.exe" if os.name == 'nt' else "mapper"
+        alt_exe = os.path.join(ENGINE_DIR, alt_name)
+        if os.path.exists(alt_exe):
+            mapper_exe = alt_exe
         else:
-             raise Exception(f"Mapper executable not found at: {mapper_exe}")
+            raise Exception(f"Mapper binary not found at: {mapper_exe}")
 
     if not os.path.exists(reducer_exe):
-        if os.name != 'nt' and os.path.exists(reducer_exe + ".exe"):
-             reducer_exe += ".exe"
+        alt_name = "reducer.exe" if os.name == 'nt' else "reducer"
+        alt_exe = os.path.join(ENGINE_DIR, alt_name)
+        if os.path.exists(alt_exe):
+            reducer_exe = alt_exe
         else:
-             raise Exception(f"Reducer executable not found at: {reducer_exe}")
+            raise Exception(f"Reducer binary not found at: {reducer_exe}")
 
     with open(input_path, "r", encoding="utf-8") as f:
         input_data = f.read()
