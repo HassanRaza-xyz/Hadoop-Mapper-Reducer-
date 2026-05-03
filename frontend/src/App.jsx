@@ -612,13 +612,17 @@ function OutputSection({ results, meta }) {
 }
 
 /* ═ PROCESSING OVERLAY ═ */
-function ProcessingOverlay() {
+function ProcessingOverlay({ isColdStart }) {
   return (
     <div className="processing-overlay">
       <div style={{ textAlign: "center" }}>
         <div className="processing-spinner" />
         <div className="processing-title">PROCESSING_MAPREDUCE</div>
-        <div className="processing-subtitle">Building clusters... Mapping data... Reducer initializing...</div>
+        <div className="processing-subtitle">
+          {isColdStart 
+            ? "Waking up Render instance... This may take 30-40 seconds for the free tier." 
+            : "Building clusters... Mapping data... Reducer initializing..."}
+        </div>
       </div>
     </div>
   );
@@ -631,8 +635,11 @@ export default function App() {
   const [results, setResults] = useState(null);
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isColdStart, setIsColdStart] = useState(false);
   const [error, setError] = useState(null);
   const [activeStage, setActiveStage] = useState("input");
+
+  const API_BASE_URL = "https://hadoop-mapper-reducer-7.onrender.com";
 
   useEffect(() => {
     const ids = ["input", "mapper", "shuffle", "reducer", "output"];
@@ -647,14 +654,23 @@ export default function App() {
 
   const handleSubmit = useCallback(async (file) => {
     setLoading(true); setError(null); setResults(null); setMeta(null);
+    const coldStartTimer = setTimeout(() => setIsColdStart(true), 5000);
+    
     const fd = new FormData(); fd.append("file", file);
     try {
-      const res = await axios.post("/api/upload", fd, { headers: { "Content-Type": "multipart/form-data" }, timeout: 30000 });
+      const res = await axios.post(`${API_BASE_URL}/api/upload`, fd, { 
+        headers: { "Content-Type": "multipart/form-data" }, 
+        timeout: 60000 
+      });
       setResults(res.data.results); setMeta(res.data.meta);
       setTimeout(() => { ScrollTrigger.refresh(); document.getElementById("output")?.scrollIntoView({ behavior: "smooth" }); }, 600);
     } catch (err) {
       setError(err.response?.data?.error || err.message || "Pipeline failed");
-    } finally { setLoading(false); }
+    } finally { 
+      clearTimeout(coldStartTimer);
+      setLoading(false); 
+      setIsColdStart(false);
+    }
   }, []);
 
   const handleRestart = () => { setResults(null); setMeta(null); setError(null); window.scrollTo({ top: 0, behavior: "smooth" }); };
@@ -667,7 +683,7 @@ export default function App() {
       <CursorSystem />
       <ScrollProgress />
       <FixedPipeline activeStage={activeStage} />
-      {loading && <ProcessingOverlay />}
+      {loading && <ProcessingOverlay isColdStart={isColdStart} />}
       <main className="main-content">
         <HeroInput onSubmit={handleSubmit} loading={loading} error={error} />
         <MapperSection results={results} />
